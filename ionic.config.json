@@ -1,0 +1,8 @@
+{
+  "name": "Grateful",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "369423d8"
+}
