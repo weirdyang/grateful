@@ -44,7 +44,7 @@ import {
 } from '@ionic/vue';
 
 export default {
-  name: 'Folder',
+  name: 'Entry',
   components: {
     IonButtons,
     IonContent,

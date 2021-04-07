@@ -1,55 +1,151 @@
 <template>
-  <IonApp>
-    <IonSplitPane content-id="main-content">
+  <ion-app>
+    <ion-split-pane content-id="main-content">
       <ion-menu content-id="main-content" type="overlay">
         <ion-content>
           <ion-list id="inbox-list">
             <ion-list-header>Inbox</ion-list-header>
             <ion-note>hi@ionicframework.com</ion-note>
-  
-            <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
-                <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+            {{ route.path }}
+            <ion-note v-if="isAuthenticated"> Hello {{ userName }}</ion-note>
+            <ion-item>asdasd {{ isAuthenticated }}</ion-item>
+            <ion-button v-if="isAuthenticated" @click="logOut">
+              Log Out
+            </ion-button>
+            <ion-button @click="test"> test </ion-button>
+            <ion-menu-toggle
+              auto-hide="false"
+              v-for="(p, i) in appPages"
+              :key="i"
+            >
+              <ion-item
+                @click="selectedIndex = i"
+                router-direction="root"
+                :router-link="p.url"
+                lines="none"
+                detail="false"
+                class="hydrated"
+                :class="{ selected: route.path === p.url }"
+              >
+                <ion-icon
+                  slot="start"
+                  :ios="p.iosIcon"
+                  :md="p.mdIcon"
+                ></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false" v-if="!isAuthenticated">
+              <ion-item
+                lines="none"
+                detail="false"
+                class="hydrated"
+                router-link="/login"
+                :class="{ selected: route.path === '/login' }"
+              >
+                <ion-icon slot="start" :ios="keyOutline" :md="keySharp">
+                </ion-icon>
+                <ion-label>Login</ion-label>
+              </ion-item>
+              <ion-item
+                lines="none"
+                detail="false"
+                class="hydrated"
+                router-link="/register"
+                :class="{ selected: route.path === '/register' }"
+              >
+                <ion-icon
+                  slot="start"
+                  :ios="personAddOutline"
+                  :md="personAddSharp"
+                >
+                </ion-icon>
+                <ion-label>Register</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
           </ion-list>
-  
+
           <ion-list id="labels-list">
             <ion-list-header>Labels</ion-list-header>
-  
-            <ion-item v-for="(label, index) in labels" lines="none" :key="index">
-              <ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
+
+            <ion-item
+              v-for="(label, index) in labels"
+              lines="none"
+              :key="index"
+            >
+              <ion-icon
+                slot="start"
+                :ios="bookmarkOutline"
+                :md="bookmarkSharp"
+              ></ion-icon>
               <ion-label>{{ label }}</ion-label>
             </ion-item>
           </ion-list>
         </ion-content>
       </ion-menu>
       <ion-router-outlet id="main-content"></ion-router-outlet>
-    </IonSplitPane>
-  </IonApp>
+    </ion-split-pane>
+  </ion-app>
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import {
+  IonApp,
+  IonContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  IonNote,
+  IonRouterOutlet,
+  IonSplitPane,
+} from '@ionic/vue';
+import { defineComponent, ref, computed, inject } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { User } from './types/user';
+
+import {
+  archiveOutline,
+  archiveSharp,
+  bookmarkOutline,
+  bookmarkSharp,
+  heartOutline,
+  heartSharp,
+  mailOutline,
+  mailSharp,
+  paperPlaneOutline,
+  paperPlaneSharp,
+  trashOutline,
+  trashSharp,
+  warningOutline,
+  warningSharp,
+  keyOutline,
+  keySharp,
+  personAddOutline,
+  personAddSharp,
+} from 'ionicons/icons';
+import { showToast } from './common';
+import axios from 'axios';
+import { InitAxios } from './services/api.service';
 
 export default defineComponent({
   name: 'App',
   components: {
-    IonApp, 
-    IonContent, 
-    IonIcon, 
-    IonItem, 
-    IonLabel, 
-    IonList, 
-    IonListHeader, 
-    IonMenu, 
-    IonMenuToggle, 
-    IonNote, 
-    IonRouterOutlet, 
+    IonApp,
+    IonContent,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonListHeader,
+    IonMenu,
+    IonMenuToggle,
+    IonNote,
+    IonRouterOutlet,
     IonSplitPane,
   },
   setup() {
@@ -59,69 +155,106 @@ export default defineComponent({
         title: 'Inbox',
         url: '/folder/Inbox',
         iosIcon: mailOutline,
-        mdIcon: mailSharp
+        mdIcon: mailSharp,
       },
       {
         title: 'Outbox',
         url: '/folder/Outbox',
         iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp
+        mdIcon: paperPlaneSharp,
       },
       {
         title: 'Favorites',
         url: '/folder/Favorites',
         iosIcon: heartOutline,
-        mdIcon: heartSharp
+        mdIcon: heartSharp,
       },
       {
         title: 'Archived',
         url: '/folder/Archived',
         iosIcon: archiveOutline,
-        mdIcon: archiveSharp
+        mdIcon: archiveSharp,
       },
       {
         title: 'Trash',
         url: '/folder/Trash',
         iosIcon: trashOutline,
-        mdIcon: trashSharp
+        mdIcon: trashSharp,
       },
       {
         title: 'Spam',
         url: '/folder/Spam',
         iosIcon: warningOutline,
-        mdIcon: warningSharp
-      }
+        mdIcon: warningSharp,
+      },
     ];
-    const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-    
+    const labels = [
+      'Family',
+      'Friends',
+      'Notes',
+      'Work',
+      'Travel',
+      'Reminders',
+    ];
+
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+      selectedIndex.value = appPages.findIndex(
+        (page) => page.title.toLowerCase() === path.toLowerCase(),
+      );
     }
-    
+
     const route = useRoute();
-    
-    return { 
+
+    const store = useStore();
+    const isAuthenticated = computed(
+      () => store.getters['users/isAuthenticated'],
+    );
+    const userName = computed(() => store.getters['users/userName']);
+    const logOut = () => {
+      store.dispatch('users/logOut');
+      showToast('Logged out!', 2000, 'success');
+    };
+    const router = useRouter();
+    InitAxios(router, store);
+
+    const test = () => {
+      axios.get('/users');
+    };
+
+    const user = computed<User>(() => store.state.users.user);
+
+    return {
+      test,
       selectedIndex,
-      appPages, 
+      appPages,
       labels,
-      archiveOutline, 
-      archiveSharp, 
-      bookmarkOutline, 
-      bookmarkSharp, 
-      heartOutline, 
-      heartSharp, 
-      mailOutline, 
-      mailSharp, 
-      paperPlaneOutline, 
-      paperPlaneSharp, 
-      trashOutline, 
-      trashSharp, 
-      warningOutline, 
+      archiveOutline,
+      archiveSharp,
+      bookmarkOutline,
+      bookmarkSharp,
+      heartOutline,
+      heartSharp,
+      mailOutline,
+      mailSharp,
+      paperPlaneOutline,
+      paperPlaneSharp,
+      trashOutline,
+      trashSharp,
+      warningOutline,
       warningSharp,
-      isSelected: (url: string) => url === route.path ? 'selected' : ''
-    }
-  }
+      keyOutline,
+      keySharp,
+      personAddOutline,
+      personAddSharp,
+      route,
+      user,
+      logOut,
+      userName,
+      isAuthenticated,
+      isSelected: (url: string) => (url === route.path ? 'selected' : ''),
+    };
+  },
 });
 </script>
 

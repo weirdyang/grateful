@@ -1,25 +1,23 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>{{ $route.params.id }}</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <page-header :title="pageName"></page-header>
 
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">{{ $route.params.id }}</ion-title>
+          <ion-title size="large">My Navigation Bar</ion-title>
         </ion-toolbar>
       </ion-header>
-
+      <article>
+        <ion-img :src="image"></ion-img>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+      </article>
       <div id="container">
-        <strong class="capitalize">{{ $route.params.id }}</strong>
+        <strong>Ready to create an app?</strong>
         <p>
-          Explore
+          Start with Ionic
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -33,33 +31,47 @@
 </template>
 
 <script lang="ts">
+import PageHeader from '@/components/PageHeader.vue';
 import {
-  IonButtons,
   IonContent,
   IonHeader,
-  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
+  IonBackButton,
+  IonButtons,
+  IonImg,
 } from '@ionic/vue';
-
-export default {
-  name: 'Folder',
+import { defineComponent, computed } from 'vue';
+export default defineComponent({
+  name: 'Home',
   components: {
+    IonBackButton,
     IonButtons,
     IonContent,
     IonHeader,
-    IonMenuButton,
     IonPage,
     IonTitle,
     IonToolbar,
+    IonImg,
+    PageHeader,
   },
-};
+
+  setup() {
+    const image = computed(() => require('../../public/assets/icon/icon.png'));
+    const pageName = 'Home';
+    return {
+      image,
+      pageName,
+    };
+  },
+});
 </script>
 
 <style scoped>
 #container {
   text-align: center;
+
   position: absolute;
   left: 0;
   right: 0;
@@ -75,7 +87,9 @@ export default {
 #container p {
   font-size: 16px;
   line-height: 22px;
+
   color: #8c8c8c;
+
   margin: 0;
 }
 
