@@ -11,7 +11,7 @@ export default {
     state() {
         return {
             user: {},
-            isAuthenticated: !!userService.getUser()
+            isAuthenticated: userService.getUser() !== null,
         };
     },
     mutations: {

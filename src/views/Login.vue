@@ -41,6 +41,7 @@
         </ion-row>
       </form>
     </ion-content>
+    <ion-button @click="test">test</ion-button>
     <pre>{{ user }}</pre>
   </ion-page>
 </template>
@@ -65,6 +66,7 @@ import { UserLogin } from '../types/user';
 import { showToast } from '../common/index';
 import { useVuelidate } from '@vuelidate/core';
 import { email, required, minLength } from '@vuelidate/validators';
+import axios from 'axios';
 export default defineComponent({
   components: {
     IonContent,
@@ -110,7 +112,11 @@ export default defineComponent({
         }
       }
     };
+    const test = () => {
+      axios.get('/users');
+    };
     return {
+      test,
       user,
       signIn,
       goSignUp,

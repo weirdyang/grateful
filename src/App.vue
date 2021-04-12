@@ -8,7 +8,7 @@
             <ion-note>hi@ionicframework.com</ion-note>
             {{ route.path }}
             <ion-note v-if="isAuthenticated"> Hello {{ userName }}</ion-note>
-            <ion-item>asdasd {{ isAuthenticated }}</ion-item>
+            <ion-item> {{ isAuthenticated }}</ion-item>
             <ion-button v-if="isAuthenticated" @click="logOut">
               Log Out
             </ion-button>
