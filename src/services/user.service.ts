@@ -16,4 +16,6 @@ export const getUser = () => {
 export const deleteUser = () => {
     window.localStorage.removeItem(USER_KEY);
 }
+
+
 export default { getUser, setUser, deleteUser };

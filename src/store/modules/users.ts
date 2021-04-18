@@ -2,6 +2,7 @@ import axios from 'axios';
 import { User, UserLogin } from '../../types/user'
 import { Commit } from 'vuex';
 import userService from '@/services/user.service';
+import { setHeaders } from '@/services/api.service';
 interface State {
     user: User | null;
     isAuthenticated: boolean;
@@ -35,7 +36,7 @@ export default {
     },
     actions: {
         async signIn({ commit }: { commit: Commit }, userLogin: UserLogin) {
-
+            setHeaders();
             const { data } = await axios.post('/auth/login', userLogin);
             userService.setUser(data.user);
             commit('setUser', data.user);

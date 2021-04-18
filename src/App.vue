@@ -102,6 +102,7 @@ import {
   IonNote,
   IonRouterOutlet,
   IonSplitPane,
+  IonButton,
 } from '@ionic/vue';
 import { defineComponent, ref, computed, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -135,6 +136,7 @@ import { InitAxios } from './services/api.service';
 export default defineComponent({
   name: 'App',
   components: {
+    IonButton,
     IonApp,
     IonContent,
     IonIcon,

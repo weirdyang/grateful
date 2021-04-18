@@ -76,6 +76,7 @@ import { showToast, showToastWithButton } from '../common/index';
 import { useVuelidate } from '@vuelidate/core';
 import { email, required, alphaNum, minLength } from '@vuelidate/validators';
 import ValidationError from '@/components/ValidationError.vue';
+import { setHeaders } from '@/services/api.service';
 export default defineComponent({
   components: {
     IonCol,
@@ -124,6 +125,7 @@ export default defineComponent({
       if (!isValid) return;
 
       try {
+        setHeaders();
         const respose = await axios.post('/auth/register', user);
 
         await showToast(respose.data.message, 2000, 'success');
