@@ -105,10 +105,10 @@ export default defineComponent({
         router.push('/');
       } catch (error) {
         if (error.response.status === 403) {
-          console.dir(error);
+          console.error(error);
           showToast(`${error.response.data.message}`, 2000, 'danger');
         } else {
-          console.log(error);
+          console.error(error);
           return showToast('Error signing in.', 2000, 'warning');
         }
       }

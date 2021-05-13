@@ -12,6 +12,28 @@
             <ion-button v-if="isAuthenticated" @click="logOut">
               Log Out
             </ion-button>
+            <ion-menu-toggle
+              auto-hide="false"
+              v-for="(p, i) in appPages"
+              :key="i"
+            >
+              <ion-item
+                @click="selectedIndex = i"
+                router-direction="root"
+                :router-link="p.url"
+                lines="none"
+                detail="false"
+                class="hydrated"
+                :class="{ selected: route.path === p.url }"
+              >
+                <ion-icon
+                  slot="start"
+                  :ios="p.iosIcon"
+                  :md="p.mdIcon"
+                ></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
             <ion-menu-toggle auto-hide="false" v-if="!isAuthenticated">
               <ion-item
                 lines="none"

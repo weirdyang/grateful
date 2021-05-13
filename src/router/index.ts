@@ -34,7 +34,7 @@ const router = createRouter({
   routes
 })
 router.beforeEach(async (to, from, next) => {
-  console.log('in before each')
+  
   await store.dispatch(CHECK_AUTH);
   next();
 });

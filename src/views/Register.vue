@@ -142,7 +142,7 @@ export default defineComponent({
             }
           }
         } else {
-          console.log(error.response.data);
+          console.error(error.response.data);
           showToast(error.response.data.message, 2000, 'warning');
         }
       } finally {

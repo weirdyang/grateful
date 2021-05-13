@@ -4,9 +4,7 @@
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-back-button></ion-back-button>
-      </ion-buttons>
+      <ion-buttons slot="end"> </ion-buttons>
       <ion-title>{{ title }}</ion-title>
       <ion-title>{{ user?.username }}</ion-title>
     </ion-toolbar>
@@ -30,7 +28,6 @@ export default defineComponent({
     IonToolbar,
     IonMenuButton,
     IonTitle,
-    IonBackButton,
     IonButtons,
   },
   props: {
@@ -40,7 +37,7 @@ export default defineComponent({
     const store = useStore();
 
     const user = computed<User>(() => store.state.users.user);
-    console.log(user?.value?.username);
+    
     return {
       user,
     };
