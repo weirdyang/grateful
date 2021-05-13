@@ -10,9 +10,12 @@ export const InitAxios = (router: Router, store: Store<any>) => {
     axios.defaults.withCredentials = true;
     axios.interceptors.response.use(undefined, function (err) {
         return new Promise<void>(function (resolve, reject) {
-            if (err.response.status && err.response.status === 401) {
+            if(!err.response){
+                reject(err);
+            }
+            if (err.response?.status && err.response.status === 401) {
                 // if you ever get an unauthorized, logout the user
-                // store.dispatch(SIGN_OUT)
+                store.dispatch(SIGN_OUT)
                 // you can also redirect to /login if needed !
                 showToastWithButton('Please login', 'warning');
                 router.push('/login')
