@@ -26,8 +26,9 @@ export const InitAxios = (router: Router, store: Store<any>) => {
 export const setHeaders = () => {
     axios.get('/auth/crsftoken').then((response) => {
         axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token
+        console.log(response.data.token);
     }, (err) => {
-        console.log(err)
+        console.log(err);
     })
 }
 

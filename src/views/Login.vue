@@ -108,6 +108,7 @@ export default defineComponent({
           console.dir(error);
           showToast(`${error.response.data.message}`, 2000, 'danger');
         } else {
+          console.log(error);
           return showToast('Error signing in.', 2000, 'warning');
         }
       }
