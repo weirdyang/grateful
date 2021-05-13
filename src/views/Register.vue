@@ -125,7 +125,7 @@ export default defineComponent({
       if (!isValid) return;
 
       try {
-        setHeaders();
+        await setHeaders();
         const respose = await axios.post('/auth/register', user);
 
         await showToast(respose.data.message, 2000, 'success');

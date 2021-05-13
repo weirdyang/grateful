@@ -36,7 +36,7 @@ export default {
     },
     actions: {
         async signIn({ commit }: { commit: Commit }, userLogin: UserLogin) {
-            setHeaders();
+            await setHeaders();
             const { data } = await axios.post('/auth/login', userLogin);
             userService.setUser(data.user);
             commit('setUser', data.user);
