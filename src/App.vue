@@ -103,7 +103,7 @@ import {
   IonSplitPane,
   IonButton,
 } from '@ionic/vue';
-import { defineComponent, ref, computed, inject } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { User } from './types/user';

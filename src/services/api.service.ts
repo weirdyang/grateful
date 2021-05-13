@@ -10,7 +10,7 @@ export const InitAxios = (router: Router, store: Store<any>) => {
     axios.defaults.withCredentials = true;
     axios.interceptors.response.use(undefined, function (err) {
         return new Promise<void>(function (resolve, reject) {
-            if(!err.response){
+            if (!err.response) {
                 reject(err);
             }
             if (err.response?.status && err.response.status === 401) {
@@ -31,6 +31,13 @@ export const setHeaders = () => {
         axios.defaults.headers.common['X-XSRF-TOKEN'] = response.data.token
 
     }, (err) => {
+        if (err.response) {
+            console.log(err.response);
+        } else if (err.request) {
+            console.log(err.request)
+        } else {
+            console.log(err.message);
+        }
         throw new Error('unable to set crsf token');
     })
 }

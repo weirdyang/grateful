@@ -17,7 +17,6 @@ import {
   IonToolbar,
   IonMenuButton,
   IonTitle,
-  IonBackButton,
   IonButtons,
 } from '@ionic/vue';
 import { computed, defineComponent } from 'vue';
@@ -37,7 +36,7 @@ export default defineComponent({
     const store = useStore();
 
     const user = computed<User>(() => store.state.users.user);
-    
+
     return {
       user,
     };

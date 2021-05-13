@@ -48,7 +48,7 @@ export default {
             userService.deleteUser();
             commit('purgeUser');
         },
-        async checkAuth({ commit, state }: { commit: Commit; state: State }) {
+        async checkAuth({ commit }: { commit: Commit }) {
             if (!userService.getUser()) {
                 console.log('purging user');
                 commit('purgeUser');

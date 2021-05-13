@@ -24,7 +24,6 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 import store from './store'
-import { InitAxios } from './services/api.service';
 
 
 const app = createApp(App).use(store)
